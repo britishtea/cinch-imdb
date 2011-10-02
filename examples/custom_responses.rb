@@ -1,7 +1,7 @@
 # encoding: utf-8
 
-require 'cinch'
-require_relative '../cinch-imdb/lib/cinch/plugins/imdb.rb'
+require "cinch"
+require "cinch/plugins/imdb"
 
 class Cinch::Plugins::Imdb
   def standard_response(movie)
