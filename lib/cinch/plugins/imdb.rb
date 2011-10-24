@@ -8,6 +8,7 @@ module Cinch
     class Imdb
       include Cinch::Plugin
       prefix ":"
+      help "Usage: :imdb [-option] The Dark Knight"
 
       match /imdb (?:-([\S]+)(?: ))?(.+)/i, method: :imdb
 
