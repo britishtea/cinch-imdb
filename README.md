@@ -1,3 +1,10 @@
+Features
+========
+
+- Commandline-like search
+- The ability to search for 'facts' such as runtime, rating, trailer or a list of actors
+- Customizable responses
+
 Usage
 =====
 
@@ -18,6 +25,7 @@ Configuration
 
 Here's an example configuration of a Cinch bot that uses the cinch-imdb plugin
 
+	require 'cinch'
 	require 'cinch/plugins/imdb'
 	
 	bot = Cinch::Bot.new do
@@ -29,14 +37,12 @@ Here's an example configuration of a Cinch bot that uses the cinch-imdb plugin
 		end
 	end
 
-See [the wiki](https://github.com/britishtea/cinch-imdb/wiki) for more configuration options.
+The 'examples' folders contains some 'advanced' configurations that help you customize the responses for the cinch-imdb plugin.
 
 To do
 =====
 
-- Add the ability to change the prefix (default is :)
 - Search YouTube directly for trailers, instead of returning a search link
-- A useful help message and/or command
 
 License
 =======
