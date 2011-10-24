@@ -11,6 +11,14 @@ class Cinch::Plugins::Imdb
     
     "#{movie.title} - #{stars}"
   end
+  
+  def fact_response(movie, fact, result)
+    "The #{fact} for #{movie.title} is #{result}"
+  end
+
+  def not_found_response(query)
+    "Sorry bud, can't find #{query} anywhere."
+  end
 end
 
 bot = Cinch::Bot.new do
