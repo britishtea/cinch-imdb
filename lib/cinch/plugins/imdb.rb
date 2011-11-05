@@ -1,4 +1,5 @@
 require "bundler/setup"
+require "imdb_party"
 
 module Cinch
   module Plugins
