@@ -4,7 +4,7 @@ require "cinch"
 require "cinch/plugins/imdb"
 
 class Cinch::Plugins::Imdb
-  prefix "!"
+  prefix /^!/
 end
 
 bot = Cinch::Bot.new do
