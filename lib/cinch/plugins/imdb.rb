@@ -5,10 +5,10 @@ module Cinch
   module Plugins
     class Imdb
       include Cinch::Plugin
-      prefix ":"
+      prefix /^\:/
       help "Usage: :imdb [-option] The Dark Knight"
 
-      match /imdb (?:-([\S]+)(?: ))?(.+)/i, method: :imdb
+      match /imdb (?:-([\S]+)(?: ))?(.+)$/i, method: :imdb
 
       def initialize(*args)
         super
