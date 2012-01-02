@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'cinch-imdb'
-  s.version     = '1.0'
+  s.version     = '1.0.1'
   s.summary     = "Search IMDb with a Cinch IRC bot"
   s.description = "Commandline like IMDB search with a Cinch IRC bot"
   s.authors     = ["Waxjar"]
