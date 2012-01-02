@@ -6,6 +6,6 @@ Gem::Specification.new do |s|
   s.authors     = ["Waxjar"]
   s.files       = ["lib/cinch/plugins/imdb.rb"]
   
-  s.add_runtime_dependency 'cinch', '~> 1.3.1'
+  s.add_runtime_dependency 'cinch', '~> 1.1.3'
   s.add_runtime_dependency 'imdb_party', '~> 0.6.1'
 end
