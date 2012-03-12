@@ -1,50 +1,61 @@
-Features
-========
+# Cinch-imdb
 
-- Commandline-like search
+## Features
+
+- Command line-like search
 - The ability to search for 'facts' such as runtime, rating, trailer or a list of actors
-- Customizable responses
+- Custom responses using lambdas.
 
-Usage
-=====
+## Usage
 
 Cinch-imdb's syntax is fairly simple:
 	
-	:imdb [-option] Movie
+	!imdb [--option] title of the movie
 
 Example response:
 	
-	[20:31:22] <~shades> :imdb toy story 3
-	[20:31:23] <PervServ> Toy Story 3 (2010) - 8.6/10  - 103 min - http://imdb.com/title/tt0435761/
-	[20:31:23] <PervServ> Plot: The toys are mistakenly delivered to a day-care center instead of the attic right before Andy leaves for college, and it's up to Woody to convince the other toys that they weren't abandoned and to return home.
+	[17:28:47] <~shades> !imdb the dark knight
+	[17:28:54] <testsie> The Dark Knight (2008) - 8.9/10 - 152 min - Batman, Gordon and Harvey Dent are forced to deal with the chaos unleashed by a terrorist mastermind known only as the Joker, as he drives each of them to their limits. (http://imdb.com/title/tt0468569/)
 
-Both `:imdb Toy Story 3` and `:imdb -runtime Toy Story 3` are valid commands. The available options are: title, imdb_id, tagline, plot, runtime, rating, release_date, poster_url, certification, trailer, genres, writers, directors and actors. Options are, well, optional.
+Both `!imdb Toy Story 3` and `!imdb --runtime Toy Story 3` are valid commands. The available options are: title, imdb_id, tagline, plot, runtime, rating, release_date, poster_url, certification, trailer, genres, writers, directors and actors. Options are, well, optional.
 
-Configuration
-=============
+## Configuration
 
 Here's an example configuration of a Cinch bot that uses the cinch-imdb plugin
 
-	require 'cinch'
-	require 'cinch/plugins/imdb'
-	
-	bot = Cinch::Bot.new do
-    	configure do |c|
-	      c.server          = "irc.freenode.net"
-	      c.nick            = "IMDb"
-	      c.channels        = ['#film'] 
-	      c.plugins.plugins = [Cinch::Plugins::Imdb]
-		end
+```ruby
+require 'cinch'
+require 'cinch/plugins/imdb'
+
+bot = Cinch::Bot.new do
+   	configure do |c|
+      c.server          = "irc.freenode.net"
+      c.nick            = "IMDb"
+      c.channels        = ['#film'] 
+      c.plugins.plugins = [Cinch::Plugins::Imdb]
 	end
+end
+```
 
-The 'examples' folders contains some 'advanced' configurations that help you customize the responses for the cinch-imdb plugin.
+The `examples` folder contains some 'advanced' configurations that help you customize the responses.
 
-To do
-=====
+## To do
 
-- Search YouTube directly for trailers, instead of returning a search link
+- Search YouTube directly for trailers, instead of returning a search link.
 
-License
-=======
+## Changelog
 
-https://creativecommons.org/licenses/by-nc-sa/3.0/nl/deed.en
+### 1.1.0
+- Custom responses are now lambdas instead of monkey-patched methods.
+- IRC command now accepts `!imdb --fact ...` in addition to `!imdb -fact ...`.
+- License changed from [Creative Commons](https://creativecommons.org/licenses/by-nc-sa/3.0/nl/deed.en) to MIT License.
+
+## License - MIT License
+
+Copyright (C) 2012 Paul Brickfeld
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
