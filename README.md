@@ -32,7 +32,7 @@ bot = Cinch::Bot.new do
       c.server          = "irc.freenode.net"
       c.nick            = "IMDb"
       c.channels        = ['#film'] 
-      c.plugins.plugins = [Cinch::Plugins::Imdb]
+      c.plugins.plugins = [Cinch::Plugins::IMDb]
 	end
 end
 ```

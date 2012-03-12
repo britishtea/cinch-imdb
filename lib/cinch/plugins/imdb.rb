@@ -2,7 +2,7 @@ require 'imdb_party'
 
 module Cinch
   module Plugins
-    class Imdb
+    class IMDb
       include Cinch::Plugin
       
       set :plugin_name, 'imdb'

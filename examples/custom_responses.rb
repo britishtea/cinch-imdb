@@ -10,9 +10,9 @@ bot = Cinch::Bot.new do
     c.server = "irc.what-network.net"
     c.channels = ["#film"]
     
-    c.plugins.plugins = [Cinch::Plugins::Imdb]
+    c.plugins.plugins = [Cinch::Plugins::IMDb]
     
-    c.plugins.options[Cinch::Plugins::Imdb] = {
+    c.plugins.options[Cinch::Plugins::IMDb] = {
       :standard => lambda { 
         |movie| stars = String.new
           movie.rating.to_i.times { stars << "★" }
