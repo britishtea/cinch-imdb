@@ -121,10 +121,19 @@ module Cinch
       #
       # Returns a IMDbParty::Movie object.
       def find_movie(query)
-        @imdb  = ImdbParty::Imdb.new
-        
         unless query =~ /((?:tt)?[0-9]{7})/i
-          id = @imdb.find_by_title(query).first[:imdb_id]
+          results = @imdb.find_by_title(query)
+          
+          # IMDb's search (and consequently imdb_party's search) sucks. Look if
+          # one of the three top results ("popular titles") has an exact title.
+          # match.
+          id = nil
+          
+          results[0..2].each do |movie|
+            id = movie[:imdb_id] if movie[:title].downcase == query.downcase
+          end
+          
+          id ||= results.first[:imdb_id]
         end
         
         @imdb.find_movie_by_id id || query
