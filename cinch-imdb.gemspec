@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.files       = ["lib/cinch/plugins/imdb.rb"]
   
-  s.add_dependency 'cinch', '~> 2.0.0.pre'
+  s.add_dependency 'cinch', '~> 2.0.0'
   s.add_dependency 'imdb_party', '~> 0.6.1'
+  s.add_dependency 'httparty', '0.8.2' # strange bug in httparty :s
 end
