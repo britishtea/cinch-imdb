@@ -45,7 +45,14 @@ The `examples` folder contains some 'advanced' configurations that help you cust
 
 ## Changelog
 
+### 1.1.1
+
+- Fixed a bug where using httparty 0.8.3 produced an error.
+- Slightly improved the search results.
+
+
 ### 1.1.0
+
 - Custom responses are now lambdas instead of monkey-patched methods.
 - IRC command now accepts `!imdb --fact ...` in addition to `!imdb -fact ...`.
 - License changed from [Creative Commons](https://creativecommons.org/licenses/by-nc-sa/3.0/nl/deed.en) to MIT License.
