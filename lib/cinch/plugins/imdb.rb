@@ -1,4 +1,8 @@
 require 'imdb_party'
+require 'shortly'
+require 'youtube_it'
+
+require 'uri'
 
 module Cinch
   module Plugins
@@ -9,6 +13,7 @@ module Cinch
       set :help, "Usage: :imdb [--option] The Dark Knight\nOptions are: title, imdb_id, tagline, plot, runtime, rating, release_date, poster_url, certification, trailer, genres, writers, directors and actors."
       
       match /imdb -{1,2}trailer (.+)/i, :group => :imdb, :method => :trailer
+      match /imdb -{0,2}more( .+)?/i,   :group => :imdb, :method => :more
       match /imdb -{1,2}(\S+) (.+)/i,   :group => :imdb, :method => :fact
       match /imdb (.+)$/i,              :group => :imdb, :method => :imdb
       
@@ -22,7 +27,12 @@ module Cinch
         super
         
         # Set up IMDbParty.
-        @imdb  = ImdbParty::Imdb.new :anonymize => true
+        @imdb = ImdbParty::Imdb.new :anonymize => true
+
+        # Set up YouTubeIt
+        @youtube = YouTubeIt::Client.new
+
+        @isgd = Shortly::Clients::Isgd
         
         # The standard response when a movie is requested.
         @standard = self.config[:standard] || lambda do |movie|
@@ -38,7 +48,7 @@ module Cinch
         
         # The response when a specific fact is requested.
         @fact = self.config[:fact] || lambda do |movie, fact, result|
-           "#{fact.capitalize} for #{movie.title}: #{result}"
+           "#{movie.title.capitalize} #{fact}: #{result}"
         end
         
         # The response when a movie couldn't be found.
@@ -54,15 +64,16 @@ module Cinch
       #
       # Returns nothing.
       def trailer(m, query)
-        movie = find_movie query rescue StandardError 'not found'
+        movie = find_movie query rescue StandardError.new "#{query} not found."
 
         if movie.trailers.size >= 1 then
-          url = "#{movie.trailers.first[1]}" # movie.trailers is lame             
+          url = movie.trailers.first[1] # movie.trailers is lame             
         else
-          url = "http://youtu.be/search?q=trailer+#{URI.escape(movie.title)}"
+          trailers = @youtube.videos_by(:query => "#{movie.title} trailer")
+          url      = trailers.videos.first.player_url
         end
         
-        m.reply @fact.call movie, 'trailer', url
+        m.reply @fact.call movie, 'trailer', @isgd.shorten(url).shorturl
       rescue => e
         m.reply @not_found.call query
         bot.loggers.error e.message
@@ -114,6 +125,10 @@ module Cinch
         m.reply @not_found.call query
         bot.loggers.error e.message
       end
+
+      def more(m, query = nil)
+        m.reply "More: http://www.imdb.com/find?q=#{URI.escape query || @last}"
+      end
       
       # Internal: Finds a movie by title or IMDb id.
       #
@@ -121,22 +136,10 @@ module Cinch
       #
       # Returns a IMDbParty::Movie object.
       def find_movie(query)
-        unless query =~ /((?:tt)?[0-9]{7})/i
-          results = @imdb.find_by_title(query)
-          
-          # IMDb's search (and consequently imdb_party's search) sucks. Look if
-          # one of the three top results ("popular titles") has an exact title.
-          # match.
-          id = nil
-          
-          results[0..2].each do |movie|
-            id = movie[:imdb_id] if movie[:title].downcase == query.downcase
-          end
-          
-          id ||= results.first[:imdb_id]
-        end
-        
-        @imdb.find_movie_by_id id || query
+        @last = query
+
+        results = @imdb.find_by_title query unless query =~ /t{0,2}([0-9]{7})$/i
+        @imdb.find_movie_by_id results.first[:imdb_id] || query
       rescue => e
         bot.loggers.error e.message
       end
