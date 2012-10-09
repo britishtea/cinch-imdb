@@ -13,12 +13,12 @@ bot = Cinch::Bot.new do
     c.plugins.plugins = [Cinch::Plugins::IMDb]
     
     c.plugins.options[Cinch::Plugins::IMDb] = {
-      :standard => lambda { 
-        |movie| stars = String.new
-          movie.rating.to_i.times { stars << "★" }
-          stars << "☆" until stars.length == 10
+      :standard => lambda { |movie|
+        stars = String.new
+        movie.rating.to_i.times { stars << "★" }
+        stars << "☆" until stars.length == 10
 
-          "#{movie.title} - #{stars}"
+        "#{movie.title} - #{stars}"
       },
       :fact => lambda{ |movie, fact, result| 
         "The #{fact} for #{movie.title} is #{result}"
