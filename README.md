@@ -39,11 +39,14 @@ end
 
 The `examples` folder contains some 'advanced' configurations that help you customize the responses.
 
-## To do
-
-- Search YouTube directly for trailers, instead of returning a search link.
-
 ## Changelog
+
+### 1.2.0
+
+- Search youtube directly for trailers.
+- Started using an URL shortener for trailer URLs.
+- Took out search "optimisation" introduced in **1.1.1**.
+- Added an `!imdb more` command, which links to the IMDb website.
 
 ### 1.1.1
 
