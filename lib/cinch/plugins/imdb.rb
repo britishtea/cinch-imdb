@@ -1,4 +1,4 @@
-require 'imdb_party'
+require 'filmbuff'
 require 'shortly'
 require 'youtube_it'
 
@@ -12,6 +12,7 @@ module Cinch
       set :plugin_name, 'imdb'
       set :help, "Usage: :imdb [--option] The Dark Knight\nOptions are: title, imdb_id, tagline, plot, runtime, rating, release_date, poster_url, certification, trailer, genres, writers, directors and actors."
       
+      match /trailer (.+)/i,                             :method => :trailer 
       match /imdb -{1,2}trailer (.+)/i, :group => :imdb, :method => :trailer
       match /imdb -{0,2}more( .+)?/i,   :group => :imdb, :method => :more
       match /imdb -{1,2}(\S+) (.+)/i,   :group => :imdb, :method => :fact
@@ -19,25 +20,20 @@ module Cinch
       
       # Internal: The facts that can be looked up.
       FACTS = ['title', 'imdb_id', 'tagline', 'plot', 'runtime', 'rating',
-                'release_date', 'poster_url', 'certification', 'trailer',
-                'genres', 'writers', 'directors', 'actors']    
+                'release_date', 'poster_url', 'certification', 'genres']    
 
       # Initializes the plugin.
       def initialize(*args)
         super
         
-        # Set up IMDbParty.
-        @imdb = ImdbParty::Imdb.new :anonymize => true
-
-        # Set up YouTubeIt
+        @imdb    = FilmBuff::IMDb.new
         @youtube = YouTubeIt::Client.new
-
-        @isgd = Shortly::Clients::Isgd
+        @isgd    = Shortly::Clients::Isgd
         
         # The standard response when a movie is requested.
         @standard = self.config[:standard] || lambda do |movie|
           msg  = movie.title
-          msg << " (#{movie.release_date[0, 4]})" unless movie.release_date.nil?
+          msg << " (#{movie.release_date.year})" unless movie.release_date.nil?
           msg << " - #{movie.rating}/10" unless movie.rating.nil?
           msg << " - #{movie.runtime}" unless movie.runtime.nil?
           msg << " - #{movie.plot}" unless movie.plot.nil?
@@ -136,10 +132,13 @@ module Cinch
       #
       # Returns a IMDbParty::Movie object.
       def find_movie(query)
-        @last = query
+        @last_query = query
 
-        results = @imdb.find_by_title query unless query =~ /t{0,2}([0-9]{7})$/i
-        @imdb.find_movie_by_id results.first[:imdb_id] || query
+        if query =~ /t{0,2}([0-9]{7})$/i
+          @imdb.find_by_id query
+        else
+          @imdb.find_by_id @imdb.find_by_title(query).imdb_id
+        end
       rescue => e
         bot.loggers.error e.message
       end

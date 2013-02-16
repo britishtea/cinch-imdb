@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.files       = ["lib/cinch/plugins/imdb.rb"]
   
   s.add_dependency 'cinch', '~> 2.0.0'
-  s.add_dependency 'imdb_party', '~> 0.7.1'
+  s.add_dependency 'filmbuff', '~> 0.1.6'
   s.add_dependency 'youtube_it', '~> 2.1.7'
   s.add_dependency 'shortly', '~> 0.3.3'
 end
