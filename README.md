@@ -1,5 +1,11 @@
 # Cinch-imdb
 
+**NOTE**: This gem is no longer maintained. A working version of a very similar
+plugin can be found [here][bitches-imdb]. If you're interested in taking over
+development please contact me.
+
+[bitches-imdb]: https://github.com/britishtea/bitches/blob/master/lib/cinch/plugins/imdb.rb
+
 ## Features
 
 - Command line-like search
